@@ -46,7 +46,7 @@ func TestHandleGenerateSQL_CORSHeaders(t *testing.T) {
 
 	expectedHeaders := map[string]string{
 		"Access-Control-Allow-Origin":          "https://sql-workbench.com",
-		"Access-Control-Allow-Methods":         "POST, OPTIONS",
+		"Access-Control-Allow-Methods":         "POST, GET, OPTIONS",
 		"Access-Control-Allow-Headers":         "Content-Type",
 		"Access-Control-Allow-Private-Network": "true",
 	}

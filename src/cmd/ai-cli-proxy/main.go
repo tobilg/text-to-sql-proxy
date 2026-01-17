@@ -48,6 +48,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/generate-sql", h.HandleGenerateSQL)
 	mux.HandleFunc("/providers", h.HandleProviders)
+	mux.HandleFunc("/health", h.HandleHealth)
 	mux.HandleFunc("/openapi.json", h.HandleOpenAPI)
 
 	server := &http.Server{

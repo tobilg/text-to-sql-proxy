@@ -94,7 +94,7 @@ func (h *Handler) HandleGenerateSQL(w http.ResponseWriter, r *http.Request) {
 // setCORSHeaders sets the required CORS and Private Network Access headers.
 func (h *Handler) setCORSHeaders(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", h.allowedOrigin)
-	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Access-Control-Allow-Private-Network", "true")
 }
@@ -110,6 +110,15 @@ func (h *Handler) sendError(w http.ResponseWriter, message string, statusCode in
 func (h *Handler) sendJSON(w http.ResponseWriter, response SQLResponse) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
+}
+
+// HandleHealth handles GET /health requests for health checks.
+func (h *Handler) HandleHealth(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 // HandleProviders handles GET /providers requests.

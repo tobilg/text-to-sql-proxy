@@ -24,6 +24,9 @@ func CleanSQL(sql string) string {
 		sql = matches[1]
 	}
 
+	// Remove backticks (MySQL-style quoting) - DuckDB doesn't use them
+	sql = strings.ReplaceAll(sql, "`", "")
+
 	return strings.TrimSpace(sql)
 }
 

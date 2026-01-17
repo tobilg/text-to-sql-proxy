@@ -30,6 +30,11 @@ func TestCleanSQL_RemovesMarkdownCodeBlock(t *testing.T) {
 			input:    "  SELECT * FROM users  ",
 			expected: "SELECT * FROM users",
 		},
+		{
+			name:     "with backticks",
+			input:    "SELECT COUNT(*) FROM `aws_iam`.actions",
+			expected: "SELECT COUNT(*) FROM aws_iam.actions",
+		},
 	}
 
 	for _, tc := range tests {

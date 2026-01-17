@@ -9,10 +9,10 @@ This proxy allows browser-based applications (like [sql-workbench.com](https://s
 ### How It Works
 
 ```
-┌─────────────────┐     HTTP POST      ┌─────────────────┐     exec      ┌─────────────────┐
-│   Web Browser   │ ─────────────────► │  ai-cli-proxy   │ ────────────► │    AI CLI       │
-│ (sql-workbench) │ ◄───────────────── │  localhost:4000 │ ◄──────────── │ (claude/gemini) │
-└─────────────────┘     SQL Response   └─────────────────┘    Response   └─────────────────┘
+┌─────────────────┐     HTTP POST      ┌─────────────────┐     exec      ┌─────────────────────┐
+│   Web Browser   │ ─────────────────► │  ai-cli-proxy   │ ────────────► │    AI CLI           │
+│ (sql-workbench) │ ◄───────────────── │  localhost:4000 │ ◄──────────── │ (claude/gemini/...) │
+└─────────────────┘     SQL Response   └─────────────────┘    Response   └─────────────────────┘
 ```
 
 ### Supported Providers
@@ -115,6 +115,22 @@ Press Ctrl+C to stop
 Valid providers: `claude`, `gemini`, `codex`, `continue`, `opencode`
 
 ## API
+
+### GET /health
+
+Health check endpoint to verify the proxy is running.
+
+**Example Request:**
+
+```bash
+curl http://localhost:4000/health
+```
+
+**Example Response (200):**
+
+Empty response with HTTP status 200.
+
+---
 
 ### GET /openapi.json
 

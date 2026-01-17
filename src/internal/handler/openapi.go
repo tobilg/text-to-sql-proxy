@@ -178,6 +178,18 @@ const OpenAPISpec = `{
           }
         }
       }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Returns HTTP 200 if the proxy is running. Used by tools to check if the proxy is available.",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "Proxy is running"
+          }
+        }
+      }
     }
   },
   "components": {
