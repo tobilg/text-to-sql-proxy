@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	claudeSystemPrompt = "You are a DuckDB expert. Generate ONLY raw SQL queries. No markdown, no explanations."
+	claudeSystemPrompt = "You are a DuckDB expert. Generate ONLY raw SQL queries. No markdown, no explanations. Format the SQL nicely with 2-space indentation."
 	claudeJSONSchema   = `{"type":"object","properties":{"sql":{"type":"string"}},"required":["sql"]}`
 )
 

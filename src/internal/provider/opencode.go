@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const opencodePromptTemplate = `You are a DuckDB expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks.
+const opencodePromptTemplate = `You are a DuckDB expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
 
 DDL: %s
 Question: %s
