@@ -120,15 +120,38 @@ Valid providers: `claude`, `gemini`, `codex`, `continue`, `opencode`
 
 Returns the OpenAPI v3 specification for this API.
 
+**Example Request:**
+
 ```bash
 curl http://localhost:4000/openapi.json
 ```
+
+**Example Response (200):**
+
+```json
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AI CLI Proxy API",
+    "version": "1.0.0"
+  },
+  "paths": { ... }
+}
+```
+
+---
 
 ### GET /providers
 
 Returns the list of available AI providers.
 
-**Response:**
+**Example Request:**
+
+```bash
+curl http://localhost:4000/providers
+```
+
+**Example Response (200):**
 
 ```json
 {
@@ -136,17 +159,13 @@ Returns the list of available AI providers.
 }
 ```
 
-**Example:**
-
-```bash
-curl http://localhost:4000/providers
-```
+---
 
 ### POST /generate-sql
 
 Generate a DuckDB SQL query from a schema and natural language question.
 
-**Request:**
+**Request Body:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -156,15 +175,16 @@ Generate a DuckDB SQL query from a schema and natural language question.
 
 **Example Request:**
 
-```json
-{
-  "ddl": "CREATE TABLE users (id INT, name TEXT, email TEXT);",
-  "question": "Find all users whose name starts with 'A'",
-  "provider": "gemini"
-}
+```bash
+curl -X POST http://localhost:4000/generate-sql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ddl": "CREATE TABLE users (id INT, name TEXT, email TEXT);",
+    "question": "Find all users whose name starts with A"
+  }'
 ```
 
-**Success Response (200):**
+**Example Response (200):**
 
 ```json
 {
@@ -172,27 +192,34 @@ Generate a DuckDB SQL query from a schema and natural language question.
 }
 ```
 
-**Error Response (400/500):**
+**Example Request with Provider Override:**
+
+```bash
+curl -X POST http://localhost:4000/generate-sql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ddl": "CREATE TABLE orders (id INT, user_id INT, total DECIMAL, created_at TIMESTAMP);",
+    "question": "Calculate total sales per month",
+    "provider": "gemini"
+  }'
+```
+
+**Example Response (200):**
 
 ```json
 {
-  "error": "Failed to generate SQL"
+  "sql": "SELECT DATE_TRUNC('month', created_at) AS month, SUM(total) AS total_sales FROM orders GROUP BY month ORDER BY month"
 }
 ```
 
-### Examples
+**Error Responses:**
 
-```bash
-# Using default provider
-curl -X POST http://localhost:4000/generate-sql \
-  -H "Content-Type: application/json" \
-  -d '{"ddl":"CREATE TABLE users (id INT, name TEXT);","question":"Select all users"}'
-
-# Using a specific provider
-curl -X POST http://localhost:4000/generate-sql \
-  -H "Content-Type: application/json" \
-  -d '{"ddl":"CREATE TABLE orders (id INT, total DECIMAL);","question":"Sum all totals","provider":"gemini"}'
-```
+| Status | Description | Example |
+|--------|-------------|---------|
+| 400 | Invalid JSON or missing required fields | `{"error": "Both 'ddl' and 'question' fields are required"}` |
+| 400 | Unknown provider | `{"error": "Unknown provider: invalid"}` |
+| 405 | Method not allowed | `{"error": "Method not allowed"}` |
+| 500 | AI CLI execution failed | `{"error": "Failed to generate SQL"}` |
 
 ## Development
 
