@@ -160,7 +160,7 @@ const OpenAPISpec = `{
     "/providers": {
       "get": {
         "summary": "List Providers",
-        "description": "Returns the list of available AI providers.",
+        "description": "Returns the list of available AI providers with their descriptions.",
         "operationId": "listProviders",
         "responses": {
           "200": {
@@ -171,7 +171,13 @@ const OpenAPISpec = `{
                   "$ref": "#/components/schemas/ProvidersResponse"
                 },
                 "example": {
-                  "providers": ["claude", "gemini", "codex", "continue", "opencode"]
+                  "providers": [
+                    {"name": "claude", "description": "Anthropic Claude CLI"},
+                    {"name": "gemini", "description": "Google Gemini CLI"},
+                    {"name": "codex", "description": "OpenAI Codex CLI"},
+                    {"name": "continue", "description": "Continue CLI"},
+                    {"name": "opencode", "description": "OpenCode CLI"}
+                  ]
                 }
               }
             }
@@ -246,10 +252,24 @@ const OpenAPISpec = `{
           "providers": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/ProviderInfo"
             },
-            "description": "List of available AI provider names",
-            "example": ["claude", "gemini", "codex", "continue", "opencode"]
+            "description": "List of available AI providers"
+          }
+        }
+      },
+      "ProviderInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Technical name of the provider",
+            "example": "claude"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description of the provider",
+            "example": "Anthropic Claude CLI"
           }
         }
       }

@@ -159,7 +159,7 @@ curl http://localhost:4000/openapi.json
 
 ### GET /providers
 
-Returns the list of available AI providers.
+Returns the list of available AI providers with their descriptions.
 
 **Example Request:**
 
@@ -171,7 +171,13 @@ curl http://localhost:4000/providers
 
 ```json
 {
-  "providers": ["claude", "gemini", "codex", "continue", "opencode"]
+  "providers": [
+    {"name": "claude", "description": "Anthropic Claude CLI"},
+    {"name": "gemini", "description": "Google Gemini CLI"},
+    {"name": "codex", "description": "OpenAI Codex CLI"},
+    {"name": "continue", "description": "Continue CLI"},
+    {"name": "opencode", "description": "OpenCode CLI"}
+  ]
 }
 ```
 

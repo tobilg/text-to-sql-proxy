@@ -22,6 +22,21 @@ type SQLResponse struct {
 	Error string `json:"error,omitempty"`
 }
 
+// ProviderInfo represents a provider with its metadata.
+type ProviderInfo struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+// providerDescriptions maps provider names to human-readable descriptions.
+var providerDescriptions = map[string]string{
+	"claude":   "Claude Code",
+	"gemini":   "Google Gemini",
+	"codex":    "OpenAI Codex",
+	"continue": "Continue",
+	"opencode": "OpenCode",
+}
+
 // Handler holds dependencies for HTTP handlers.
 type Handler struct {
 	providers       map[string]provider.SQLGenerator
@@ -130,11 +145,18 @@ func (h *Handler) HandleProviders(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	providers := make([]string, 0, len(h.providers))
+	providers := make([]ProviderInfo, 0, len(h.providers))
 	for name := range h.providers {
-		providers = append(providers, name)
+		description := providerDescriptions[name]
+		if description == "" {
+			description = name
+		}
+		providers = append(providers, ProviderInfo{
+			Name:        name,
+			Description: description,
+		})
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string][]string{"providers": providers})
+	json.NewEncoder(w).Encode(map[string][]ProviderInfo{"providers": providers})
 }

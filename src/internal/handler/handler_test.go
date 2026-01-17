@@ -274,7 +274,7 @@ func TestHandleProviders_Success(t *testing.T) {
 	}
 
 	var resp struct {
-		Providers []string `json:"providers"`
+		Providers []ProviderInfo `json:"providers"`
 	}
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
@@ -282,6 +282,16 @@ func TestHandleProviders_Success(t *testing.T) {
 
 	if len(resp.Providers) != 2 {
 		t.Errorf("expected 2 providers, got %d", len(resp.Providers))
+	}
+
+	// Verify each provider has name and description
+	for _, p := range resp.Providers {
+		if p.Name == "" {
+			t.Error("provider name should not be empty")
+		}
+		if p.Description == "" {
+			t.Error("provider description should not be empty")
+		}
 	}
 }
 
