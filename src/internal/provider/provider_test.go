@@ -48,12 +48,27 @@ func TestCleanSQL_RemovesMarkdownCodeBlock(t *testing.T) {
 }
 
 func TestFormatPrompt(t *testing.T) {
-	template := "DDL: %s\nQuestion: %s"
+	template := "You are a %s expert.\nDDL: %s\nQuestion: %s"
+	database := "DuckDB"
 	ddl := "CREATE TABLE users (id INT)"
 	question := "Select all users"
 
-	result := FormatPrompt(template, ddl, question)
-	expected := "DDL: CREATE TABLE users (id INT)\nQuestion: Select all users"
+	result := FormatPrompt(template, database, ddl, question)
+	expected := "You are a DuckDB expert.\nDDL: CREATE TABLE users (id INT)\nQuestion: Select all users"
+
+	if result != expected {
+		t.Errorf("expected %q, got %q", expected, result)
+	}
+}
+
+func TestFormatPrompt_CustomDatabase(t *testing.T) {
+	template := "You are a %s expert.\nDDL: %s\nQuestion: %s"
+	database := "PostgreSQL"
+	ddl := "CREATE TABLE users (id INT)"
+	question := "Select all users"
+
+	result := FormatPrompt(template, database, ddl, question)
+	expected := "You are a PostgreSQL expert.\nDDL: CREATE TABLE users (id INT)\nQuestion: Select all users"
 
 	if result != expected {
 		t.Errorf("expected %q, got %q", expected, result)

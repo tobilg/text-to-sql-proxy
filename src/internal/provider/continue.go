@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const continuePromptTemplate = `You are a DuckDB expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
+const continuePromptTemplate = `You are a %s expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
 
 DDL: %s
 Question: %s
@@ -16,16 +16,18 @@ Question: %s
 Respond with ONLY the SQL query.`
 
 // ContinueClient implements SQLGenerator using the Continue CLI (cn).
-type ContinueClient struct{}
+type ContinueClient struct {
+	database string
+}
 
 // NewContinueClient creates a new Continue CLI client.
-func NewContinueClient() *ContinueClient {
-	return &ContinueClient{}
+func NewContinueClient(database string) *ContinueClient {
+	return &ContinueClient{database: database}
 }
 
 // GenerateSQL calls the Continue CLI to generate SQL from DDL and a question.
 func (c *ContinueClient) GenerateSQL(ddl, question string) (string, error) {
-	prompt := FormatPrompt(continuePromptTemplate, ddl, question)
+	prompt := FormatPrompt(continuePromptTemplate, c.database, ddl, question)
 
 	cmd := exec.Command("cn",
 		"-p", prompt,

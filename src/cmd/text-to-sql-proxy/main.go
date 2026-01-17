@@ -31,11 +31,11 @@ func main() {
 
 	// Initialize all providers
 	providers := map[string]provider.SQLGenerator{
-		"claude":   provider.NewClaudeClient(),
-		"gemini":   provider.NewGeminiClient(),
-		"codex":    provider.NewCodexClient(),
-		"continue": provider.NewContinueClient(),
-		"opencode": provider.NewOpenCodeClient(),
+		"claude":   provider.NewClaudeClient(cfg.Database),
+		"gemini":   provider.NewGeminiClient(cfg.Database),
+		"codex":    provider.NewCodexClient(cfg.Database),
+		"continue": provider.NewContinueClient(cfg.Database),
+		"opencode": provider.NewOpenCodeClient(cfg.Database),
 	}
 
 	// Validate configured provider exists
@@ -66,6 +66,7 @@ func main() {
 	go func() {
 		fmt.Printf("Text-to-SQL Proxy active at http://localhost:%d\n", cfg.Port)
 		fmt.Printf("Default provider: %s\n", cfg.Provider)
+		fmt.Printf("Target database: %s\n", cfg.Database)
 		fmt.Printf("Allowed origin: %s\n", cfg.AllowedOrigin)
 		fmt.Println("Available providers: claude, gemini, codex, continue, opencode")
 		fmt.Printf("API docs: http://localhost:%d/openapi.json\n", cfg.Port)

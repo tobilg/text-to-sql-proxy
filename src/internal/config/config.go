@@ -9,6 +9,7 @@ const (
 	defaultPort          = 4000
 	defaultAllowedOrigin = "https://sql-workbench.com"
 	defaultProvider      = "claude"
+	defaultDatabase      = "DuckDB"
 )
 
 // Config holds the application configuration.
@@ -16,6 +17,7 @@ type Config struct {
 	Port          int
 	AllowedOrigin string
 	Provider      string
+	Database      string
 }
 
 // Load loads configuration from environment variables with sensible defaults.
@@ -24,6 +26,7 @@ func Load() Config {
 		Port:          defaultPort,
 		AllowedOrigin: defaultAllowedOrigin,
 		Provider:      defaultProvider,
+		Database:      defaultDatabase,
 	}
 
 	if portStr := os.Getenv("TEXT_TO_SQL_PROXY_PORT"); portStr != "" {
@@ -38,6 +41,10 @@ func Load() Config {
 
 	if provider := os.Getenv("TEXT_TO_SQL_PROXY_PROVIDER"); provider != "" {
 		cfg.Provider = provider
+	}
+
+	if database := os.Getenv("TEXT_TO_SQL_PROXY_DATABASE"); database != "" {
+		cfg.Database = database
 	}
 
 	return cfg

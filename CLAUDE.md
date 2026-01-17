@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-text-to-sql-proxy is a local HTTP proxy server (Go) that bridges web applications with AI CLI tools to generate DuckDB-compatible SQL queries. It accepts DDL schemas and natural language questions via HTTP POST, executes local AI CLI commands, and returns SQL.
+text-to-sql-proxy is a local HTTP proxy server (Go) that bridges web applications with AI CLI tools to generate SQL queries. It accepts DDL schemas and natural language questions via HTTP POST, executes local AI CLI commands, and returns SQL. The target database is configurable (defaults to DuckDB).
 
 ## Build and Test Commands
 
@@ -40,6 +40,7 @@ Provider implementations call external CLI binaries via `os/exec` and parse thei
 - `TEXT_TO_SQL_PROXY_PORT` (default: 4000)
 - `TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN` (default: https://sql-workbench.com)
 - `TEXT_TO_SQL_PROXY_PROVIDER` (default: claude)
+- `TEXT_TO_SQL_PROXY_DATABASE` (default: DuckDB)
 
 ## Adding a New Provider
 

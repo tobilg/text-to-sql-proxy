@@ -30,10 +30,12 @@ func CleanSQL(sql string) string {
 	return strings.TrimSpace(sql)
 }
 
-// FormatPrompt is a helper to format prompts with DDL and question.
-func FormatPrompt(template, ddl, question string) string {
+// FormatPrompt is a helper to format prompts with database, DDL and question.
+func FormatPrompt(template, database, ddl, question string) string {
 	return strings.Replace(
-		strings.Replace(template, "%s", ddl, 1),
+		strings.Replace(
+			strings.Replace(template, "%s", database, 1),
+			"%s", ddl, 1),
 		"%s", question, 1,
 	)
 }

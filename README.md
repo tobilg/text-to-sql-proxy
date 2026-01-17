@@ -1,10 +1,10 @@
 # text-to-sql-proxy
 
-A local HTTP proxy that bridges web applications with AI CLI tools to generate DuckDB-compatible SQL queries.
+A local HTTP proxy that bridges web applications with AI CLI tools to generate SQL queries for your target database (configurable, defaults to DuckDB).
 
 ## Overview
 
-This proxy allows browser-based applications (like [sql-workbench.com](https://sql-workbench.com)) to leverage your local AI CLI subscriptions for SQL generation. It accepts DDL schemas and natural language questions, then returns DuckDB-compatible SQL queries.
+This proxy allows browser-based applications (like [sql-workbench.com](https://sql-workbench.com)) to leverage your local AI CLI subscriptions for SQL generation. It accepts DDL schemas and natural language questions, then returns SQL queries for the configured target database.
 
 ### How It Works
 
@@ -91,6 +91,9 @@ TEXT_TO_SQL_PROXY_PORT=8080 ./dist/text-to-sql-proxy
 
 # Run with custom allowed origin
 TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN="http://localhost:3000" ./dist/text-to-sql-proxy
+
+# Run with a different target database (e.g., PostgreSQL)
+TEXT_TO_SQL_PROXY_DATABASE=PostgreSQL ./dist/text-to-sql-proxy
 ```
 
 The proxy will start and display (with default settings):
@@ -98,6 +101,7 @@ The proxy will start and display (with default settings):
 ```
 Text-to-SQL Proxy active at http://localhost:4000
 Default provider: claude
+Target database: DuckDB
 Allowed origin: https://sql-workbench.com
 Available providers: claude, gemini, codex, continue, opencode
 API docs: http://localhost:4000/openapi.json
@@ -111,6 +115,7 @@ Press Ctrl+C to stop
 | `TEXT_TO_SQL_PROXY_PORT` | `4000` | Port the proxy listens on |
 | `TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN` | `https://sql-workbench.com` | CORS allowed origin |
 | `TEXT_TO_SQL_PROXY_PROVIDER` | `claude` | Default AI provider |
+| `TEXT_TO_SQL_PROXY_DATABASE` | `DuckDB` | Target database for SQL generation |
 
 Valid providers: `claude`, `gemini`, `codex`, `continue`, `opencode`
 
@@ -185,7 +190,7 @@ curl http://localhost:4000/providers
 
 ### POST /generate-sql
 
-Generate a DuckDB SQL query from a schema and natural language question.
+Generate a SQL query for the configured target database from a schema and natural language question.
 
 **Request Body:**
 

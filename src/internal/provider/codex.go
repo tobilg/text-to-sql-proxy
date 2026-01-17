@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const codexPromptTemplate = `You are a DuckDB expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
+const codexPromptTemplate = `You are a %s expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
 
 DDL: %s
 Question: %s
@@ -17,16 +17,18 @@ Question: %s
 Respond with ONLY the SQL query.`
 
 // CodexClient implements SQLGenerator using the Codex CLI.
-type CodexClient struct{}
+type CodexClient struct {
+	database string
+}
 
 // NewCodexClient creates a new Codex CLI client.
-func NewCodexClient() *CodexClient {
-	return &CodexClient{}
+func NewCodexClient(database string) *CodexClient {
+	return &CodexClient{database: database}
 }
 
 // GenerateSQL calls the Codex CLI to generate SQL from DDL and a question.
 func (c *CodexClient) GenerateSQL(ddl, question string) (string, error) {
-	prompt := FormatPrompt(codexPromptTemplate, ddl, question)
+	prompt := FormatPrompt(codexPromptTemplate, c.database, ddl, question)
 
 	cmd := exec.Command("codex", "exec",
 		prompt,

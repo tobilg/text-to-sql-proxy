@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const opencodePromptTemplate = `You are a DuckDB expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
+const opencodePromptTemplate = `You are a %s expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
 
 DDL: %s
 Question: %s
@@ -17,16 +17,18 @@ Question: %s
 Respond with ONLY the SQL query.`
 
 // OpenCodeClient implements SQLGenerator using the OpenCode CLI.
-type OpenCodeClient struct{}
+type OpenCodeClient struct {
+	database string
+}
 
 // NewOpenCodeClient creates a new OpenCode CLI client.
-func NewOpenCodeClient() *OpenCodeClient {
-	return &OpenCodeClient{}
+func NewOpenCodeClient(database string) *OpenCodeClient {
+	return &OpenCodeClient{database: database}
 }
 
 // GenerateSQL calls the OpenCode CLI to generate SQL from DDL and a question.
 func (c *OpenCodeClient) GenerateSQL(ddl, question string) (string, error) {
-	prompt := FormatPrompt(opencodePromptTemplate, ddl, question)
+	prompt := FormatPrompt(opencodePromptTemplate, c.database, ddl, question)
 
 	cmd := exec.Command("opencode", "run",
 		prompt,

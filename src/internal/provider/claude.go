@@ -4,30 +4,34 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os/exec"
 	"strings"
 )
 
 const (
-	claudeSystemPrompt = "You are a DuckDB expert. Generate ONLY raw SQL queries. No markdown, no explanations. Format the SQL nicely with 2-space indentation."
-	claudeJSONSchema   = `{"type":"object","properties":{"sql":{"type":"string"}},"required":["sql"]}`
+	claudeSystemPromptTemplate = "You are a %s expert. Generate ONLY raw SQL queries. No markdown, no explanations. Format the SQL nicely with 2-space indentation."
+	claudeJSONSchema           = `{"type":"object","properties":{"sql":{"type":"string"}},"required":["sql"]}`
 )
 
 // ClaudeClient implements SQLGenerator using the Claude CLI.
-type ClaudeClient struct{}
+type ClaudeClient struct {
+	database string
+}
 
 // NewClaudeClient creates a new Claude CLI client.
-func NewClaudeClient() *ClaudeClient {
-	return &ClaudeClient{}
+func NewClaudeClient(database string) *ClaudeClient {
+	return &ClaudeClient{database: database}
 }
 
 // GenerateSQL calls the Claude CLI to generate SQL from DDL and a question.
 func (c *ClaudeClient) GenerateSQL(ddl, question string) (string, error) {
 	userPrompt := "DDL: " + ddl + "\nQuestion: " + question
+	systemPrompt := fmt.Sprintf(claudeSystemPromptTemplate, c.database)
 
 	cmd := exec.Command("claude",
 		"-p", userPrompt,
-		"--append-system-prompt", claudeSystemPrompt,
+		"--append-system-prompt", systemPrompt,
 		"--output-format", "json",
 		"--json-schema", claudeJSONSchema,
 	)

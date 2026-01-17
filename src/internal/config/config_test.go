@@ -10,6 +10,7 @@ func TestLoad_Defaults(t *testing.T) {
 	os.Unsetenv("TEXT_TO_SQL_PROXY_PORT")
 	os.Unsetenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN")
 	os.Unsetenv("TEXT_TO_SQL_PROXY_PROVIDER")
+	os.Unsetenv("TEXT_TO_SQL_PROXY_DATABASE")
 
 	cfg := Load()
 
@@ -21,6 +22,9 @@ func TestLoad_Defaults(t *testing.T) {
 	}
 	if cfg.Provider != "claude" {
 		t.Errorf("expected default provider claude, got %s", cfg.Provider)
+	}
+	if cfg.Database != "DuckDB" {
+		t.Errorf("expected default database DuckDB, got %s", cfg.Database)
 	}
 }
 
@@ -88,14 +92,27 @@ func TestLoad_CustomProvider(t *testing.T) {
 	}
 }
 
+func TestLoad_CustomDatabase(t *testing.T) {
+	os.Setenv("TEXT_TO_SQL_PROXY_DATABASE", "PostgreSQL")
+	defer os.Unsetenv("TEXT_TO_SQL_PROXY_DATABASE")
+
+	cfg := Load()
+
+	if cfg.Database != "PostgreSQL" {
+		t.Errorf("expected database PostgreSQL, got %s", cfg.Database)
+	}
+}
+
 func TestLoad_AllCustomValues(t *testing.T) {
 	os.Setenv("TEXT_TO_SQL_PROXY_PORT", "3000")
 	os.Setenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN", "https://myapp.com")
 	os.Setenv("TEXT_TO_SQL_PROXY_PROVIDER", "codex")
+	os.Setenv("TEXT_TO_SQL_PROXY_DATABASE", "MySQL")
 	defer func() {
 		os.Unsetenv("TEXT_TO_SQL_PROXY_PORT")
 		os.Unsetenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN")
 		os.Unsetenv("TEXT_TO_SQL_PROXY_PROVIDER")
+		os.Unsetenv("TEXT_TO_SQL_PROXY_DATABASE")
 	}()
 
 	cfg := Load()
@@ -108,5 +125,8 @@ func TestLoad_AllCustomValues(t *testing.T) {
 	}
 	if cfg.Provider != "codex" {
 		t.Errorf("expected provider codex, got %s", cfg.Provider)
+	}
+	if cfg.Database != "MySQL" {
+		t.Errorf("expected database MySQL, got %s", cfg.Database)
 	}
 }

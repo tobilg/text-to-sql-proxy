@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const geminiPromptTemplate = `You are a DuckDB expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
+const geminiPromptTemplate = `You are a %s expert. Generate ONLY a raw SQL query with no markdown, no explanations, no code blocks. Format the SQL nicely with 2-space indentation.
 
 DDL: %s
 Question: %s
@@ -16,16 +16,18 @@ Question: %s
 Respond with ONLY the SQL query.`
 
 // GeminiClient implements SQLGenerator using the Gemini CLI.
-type GeminiClient struct{}
+type GeminiClient struct {
+	database string
+}
 
 // NewGeminiClient creates a new Gemini CLI client.
-func NewGeminiClient() *GeminiClient {
-	return &GeminiClient{}
+func NewGeminiClient(database string) *GeminiClient {
+	return &GeminiClient{database: database}
 }
 
 // GenerateSQL calls the Gemini CLI to generate SQL from DDL and a question.
 func (g *GeminiClient) GenerateSQL(ddl, question string) (string, error) {
-	prompt := FormatPrompt(geminiPromptTemplate, ddl, question)
+	prompt := FormatPrompt(geminiPromptTemplate, g.database, ddl, question)
 
 	cmd := exec.Command("gemini",
 		"-p", prompt,
