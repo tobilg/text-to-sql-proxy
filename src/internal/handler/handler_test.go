@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/tobilg/ai-cli-proxy/src/internal/provider"
+	"github.com/tobilg/text-to-sql-proxy/src/internal/provider"
 )
 
 // mockSQLGenerator implements provider.SQLGenerator for testing.

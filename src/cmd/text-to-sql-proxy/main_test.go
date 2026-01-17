@@ -25,8 +25,8 @@ func TestVersionFlag(t *testing.T) {
 			}
 
 			outputStr := string(output)
-			if !strings.Contains(outputStr, "ai-cli-proxy") {
-				t.Errorf("expected output to contain 'ai-cli-proxy', got %q", outputStr)
+			if !strings.Contains(outputStr, "text-to-sql-proxy") {
+				t.Errorf("expected output to contain 'text-to-sql-proxy', got %q", outputStr)
 			}
 			if !strings.Contains(outputStr, "dev") {
 				t.Errorf("expected output to contain 'dev' (default version), got %q", outputStr)
@@ -37,8 +37,8 @@ func TestVersionFlag(t *testing.T) {
 
 func TestUnknownProvider(t *testing.T) {
 	// Set an invalid provider
-	os.Setenv("AI_CLI_PROXY_PROVIDER", "invalid-provider")
-	defer os.Unsetenv("AI_CLI_PROXY_PROVIDER")
+	os.Setenv("TEXT_TO_SQL_PROXY_PROVIDER", "invalid-provider")
+	defer os.Unsetenv("TEXT_TO_SQL_PROXY_PROVIDER")
 
 	cmd := exec.Command("go", "run", ".")
 	output, err := cmd.CombinedOutput()

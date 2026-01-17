@@ -10,9 +10,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/tobilg/ai-cli-proxy/src/internal/config"
-	"github.com/tobilg/ai-cli-proxy/src/internal/handler"
-	"github.com/tobilg/ai-cli-proxy/src/internal/provider"
+	"github.com/tobilg/text-to-sql-proxy/src/internal/config"
+	"github.com/tobilg/text-to-sql-proxy/src/internal/handler"
+	"github.com/tobilg/text-to-sql-proxy/src/internal/provider"
 )
 
 var (
@@ -23,7 +23,7 @@ var (
 
 func main() {
 	if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v") {
-		fmt.Printf("ai-cli-proxy %s (commit: %s, built: %s)\n", Version, Commit, BuildDate)
+		fmt.Printf("text-to-sql-proxy %s (commit: %s, built: %s)\n", Version, Commit, BuildDate)
 		os.Exit(0)
 	}
 
@@ -64,7 +64,7 @@ func main() {
 	signal.Notify(done, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
-		fmt.Printf("AI CLI Proxy active at http://localhost:%d\n", cfg.Port)
+		fmt.Printf("Text-to-SQL Proxy active at http://localhost:%d\n", cfg.Port)
 		fmt.Printf("Default provider: %s\n", cfg.Provider)
 		fmt.Printf("Allowed origin: %s\n", cfg.AllowedOrigin)
 		fmt.Println("Available providers: claude, gemini, codex, continue, opencode")

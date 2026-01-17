@@ -7,9 +7,9 @@ import (
 
 func TestLoad_Defaults(t *testing.T) {
 	// Clear any existing env vars
-	os.Unsetenv("AI_CLI_PROXY_PORT")
-	os.Unsetenv("AI_CLI_PROXY_ALLOWED_ORIGIN")
-	os.Unsetenv("AI_CLI_PROXY_PROVIDER")
+	os.Unsetenv("TEXT_TO_SQL_PROXY_PORT")
+	os.Unsetenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN")
+	os.Unsetenv("TEXT_TO_SQL_PROXY_PROVIDER")
 
 	cfg := Load()
 
@@ -25,8 +25,8 @@ func TestLoad_Defaults(t *testing.T) {
 }
 
 func TestLoad_CustomPort(t *testing.T) {
-	os.Setenv("AI_CLI_PROXY_PORT", "8080")
-	defer os.Unsetenv("AI_CLI_PROXY_PORT")
+	os.Setenv("TEXT_TO_SQL_PROXY_PORT", "8080")
+	defer os.Unsetenv("TEXT_TO_SQL_PROXY_PORT")
 
 	cfg := Load()
 
@@ -51,10 +51,10 @@ func TestLoad_InvalidPort(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.portVal == "" {
-				os.Unsetenv("AI_CLI_PROXY_PORT")
+				os.Unsetenv("TEXT_TO_SQL_PROXY_PORT")
 			} else {
-				os.Setenv("AI_CLI_PROXY_PORT", tc.portVal)
-				defer os.Unsetenv("AI_CLI_PROXY_PORT")
+				os.Setenv("TEXT_TO_SQL_PROXY_PORT", tc.portVal)
+				defer os.Unsetenv("TEXT_TO_SQL_PROXY_PORT")
 			}
 
 			cfg := Load()
@@ -67,8 +67,8 @@ func TestLoad_InvalidPort(t *testing.T) {
 }
 
 func TestLoad_CustomAllowedOrigin(t *testing.T) {
-	os.Setenv("AI_CLI_PROXY_ALLOWED_ORIGIN", "https://example.com")
-	defer os.Unsetenv("AI_CLI_PROXY_ALLOWED_ORIGIN")
+	os.Setenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN", "https://example.com")
+	defer os.Unsetenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN")
 
 	cfg := Load()
 
@@ -78,8 +78,8 @@ func TestLoad_CustomAllowedOrigin(t *testing.T) {
 }
 
 func TestLoad_CustomProvider(t *testing.T) {
-	os.Setenv("AI_CLI_PROXY_PROVIDER", "gemini")
-	defer os.Unsetenv("AI_CLI_PROXY_PROVIDER")
+	os.Setenv("TEXT_TO_SQL_PROXY_PROVIDER", "gemini")
+	defer os.Unsetenv("TEXT_TO_SQL_PROXY_PROVIDER")
 
 	cfg := Load()
 
@@ -89,13 +89,13 @@ func TestLoad_CustomProvider(t *testing.T) {
 }
 
 func TestLoad_AllCustomValues(t *testing.T) {
-	os.Setenv("AI_CLI_PROXY_PORT", "3000")
-	os.Setenv("AI_CLI_PROXY_ALLOWED_ORIGIN", "https://myapp.com")
-	os.Setenv("AI_CLI_PROXY_PROVIDER", "codex")
+	os.Setenv("TEXT_TO_SQL_PROXY_PORT", "3000")
+	os.Setenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN", "https://myapp.com")
+	os.Setenv("TEXT_TO_SQL_PROXY_PROVIDER", "codex")
 	defer func() {
-		os.Unsetenv("AI_CLI_PROXY_PORT")
-		os.Unsetenv("AI_CLI_PROXY_ALLOWED_ORIGIN")
-		os.Unsetenv("AI_CLI_PROXY_PROVIDER")
+		os.Unsetenv("TEXT_TO_SQL_PROXY_PORT")
+		os.Unsetenv("TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN")
+		os.Unsetenv("TEXT_TO_SQL_PROXY_PROVIDER")
 	}()
 
 	cfg := Load()

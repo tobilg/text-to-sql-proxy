@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/tobilg/ai-cli-proxy/src/internal/provider"
+	"github.com/tobilg/text-to-sql-proxy/src/internal/provider"
 )
 
 // SQLRequest represents the incoming request payload.

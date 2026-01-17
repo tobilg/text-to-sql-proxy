@@ -1,4 +1,4 @@
-# ai-cli-proxy
+# text-to-sql-proxy
 
 A local HTTP proxy that bridges web applications with AI CLI tools to generate DuckDB-compatible SQL queries.
 
@@ -9,10 +9,10 @@ This proxy allows browser-based applications (like [sql-workbench.com](https://s
 ### How It Works
 
 ```
-┌─────────────────┐     HTTP POST      ┌─────────────────┐     exec      ┌───────────────┐
-│   Web Browser   │ ─────────────────► │  ai-cli-proxy   │ ────────────► │    AI CLI     │
-│ (sql-workbench) │ ◄───────────────── │  localhost:4000 │ ◄──────────── │ (claude/etc.) │
-└─────────────────┘     SQL Response   └─────────────────┘    Response   └───────────────┘
+┌─────────────────┐     HTTP POST      ┌────────────────────┐     exec      ┌───────────────┐
+│   Web Browser   │ ─────────────────► │  text-to-sql-proxy │ ────────────► │    AI CLI     │
+│ (sql-workbench) │ ◄───────────────── │  localhost:4000    │ ◄──────────── │ (claude/etc.) │
+└─────────────────┘     SQL Response   └────────────────────┘    Response   └───────────────┘
 ```
 
 ### Supported Providers
@@ -31,8 +31,8 @@ This proxy allows browser-based applications (like [sql-workbench.com](https://s
 
 ```bash
 # Clone the repository
-git clone https://github.com/tobilg/ai-cli-proxy.git
-cd ai-cli-proxy
+git clone https://github.com/tobilg/text-to-sql-proxy.git
+cd text-to-sql-proxy
 
 # Build for your platform
 make build
@@ -47,9 +47,9 @@ Download the appropriate binary for your platform from the `dist/` directory aft
 
 | Platform | Binary |
 |----------|--------|
-| Windows | `ai-cli-proxy-windows-amd64.exe` |
-| Linux | `ai-cli-proxy-linux-amd64` |
-| macOS (Apple Silicon) | `ai-cli-proxy-darwin-arm64` |
+| Windows | `text-to-sql-proxy-windows-amd64.exe` |
+| Linux | `text-to-sql-proxy-linux-amd64` |
+| macOS (Apple Silicon) | `text-to-sql-proxy-darwin-arm64` |
 
 ## Usage
 
@@ -78,25 +78,25 @@ npm i -g @continuedev/cli
 
 ```bash
 # Run with default settings (Claude provider)
-./dist/ai-cli-proxy
+./dist/text-to-sql-proxy
 
 # Run with a specific default provider
-AI_CLI_PROXY_PROVIDER=gemini ./dist/ai-cli-proxy
-AI_CLI_PROXY_PROVIDER=codex ./dist/ai-cli-proxy
-AI_CLI_PROXY_PROVIDER=continue ./dist/ai-cli-proxy
-AI_CLI_PROXY_PROVIDER=opencode ./dist/ai-cli-proxy
+TEXT_TO_SQL_PROXY_PROVIDER=gemini ./dist/text-to-sql-proxy
+TEXT_TO_SQL_PROXY_PROVIDER=codex ./dist/text-to-sql-proxy
+TEXT_TO_SQL_PROXY_PROVIDER=continue ./dist/text-to-sql-proxy
+TEXT_TO_SQL_PROXY_PROVIDER=opencode ./dist/text-to-sql-proxy
 
 # Run with custom port
-AI_CLI_PROXY_PORT=8080 ./dist/ai-cli-proxy
+TEXT_TO_SQL_PROXY_PORT=8080 ./dist/text-to-sql-proxy
 
 # Run with custom allowed origin
-AI_CLI_PROXY_ALLOWED_ORIGIN="http://localhost:3000" ./dist/ai-cli-proxy
+TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN="http://localhost:3000" ./dist/text-to-sql-proxy
 ```
 
 The proxy will start and display (with default settings):
 
 ```
-AI CLI Proxy active at http://localhost:4000
+Text-to-SQL Proxy active at http://localhost:4000
 Default provider: claude
 Allowed origin: https://sql-workbench.com
 Available providers: claude, gemini, codex, continue, opencode
@@ -108,9 +108,9 @@ Press Ctrl+C to stop
 
 | Environment Variable | Default | Description |
 |---------------------|---------|-------------|
-| `AI_CLI_PROXY_PORT` | `4000` | Port the proxy listens on |
-| `AI_CLI_PROXY_ALLOWED_ORIGIN` | `https://sql-workbench.com` | CORS allowed origin |
-| `AI_CLI_PROXY_PROVIDER` | `claude` | Default AI provider |
+| `TEXT_TO_SQL_PROXY_PORT` | `4000` | Port the proxy listens on |
+| `TEXT_TO_SQL_PROXY_ALLOWED_ORIGIN` | `https://sql-workbench.com` | CORS allowed origin |
+| `TEXT_TO_SQL_PROXY_PROVIDER` | `claude` | Default AI provider |
 
 Valid providers: `claude`, `gemini`, `codex`, `continue`, `opencode`
 
@@ -148,7 +148,7 @@ curl http://localhost:4000/openapi.json
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "AI CLI Proxy API",
+    "title": "Text-to-SQL Proxy API",
     "version": "1.0.0"
   },
   "paths": { ... }
@@ -266,9 +266,9 @@ make clean              # Remove build artifacts
 ### Project structure
 
 ```
-ai-cli-proxy/
+text-to-sql-proxy/
 ├── src/
-│   ├── cmd/ai-cli-proxy/    # Application entry point
+│   ├── cmd/text-to-sql-proxy/    # Application entry point
 │   └── internal/
 │       ├── config/          # Configuration loading
 │       ├── handler/         # HTTP handlers

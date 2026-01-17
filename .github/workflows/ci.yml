@@ -61,21 +61,21 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
-          BINARY_NAME=ai-cli-proxy
+          BINARY_NAME=text-to-sql-proxy
           if [ "${{ matrix.goos }}" = "windows" ]; then
             BINARY_NAME="${BINARY_NAME}.exe"
           fi
           go build -ldflags "-X main.Version=${{ steps.version.outputs.VERSION }} -X main.Commit=${{ github.sha }} -X main.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            -o dist/${BINARY_NAME} ./src/cmd/ai-cli-proxy
+            -o dist/${BINARY_NAME} ./src/cmd/text-to-sql-proxy
 
       - name: Create archive
         run: |
           cd dist
-          BINARY_NAME=ai-cli-proxy
+          BINARY_NAME=text-to-sql-proxy
           if [ "${{ matrix.goos }}" = "windows" ]; then
             BINARY_NAME="${BINARY_NAME}.exe"
           fi
-          ARCHIVE_NAME="ai-cli-proxy-${{ matrix.suffix }}"
+          ARCHIVE_NAME="text-to-sql-proxy-${{ matrix.suffix }}"
           if [ "${{ matrix.archive }}" = "tar.gz" ]; then
             tar -czvf "${ARCHIVE_NAME}.tar.gz" ${BINARY_NAME}
           else
@@ -85,8 +85,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ai-cli-proxy-${{ matrix.suffix }}
-          path: dist/ai-cli-proxy-${{ matrix.suffix }}.${{ matrix.archive }}
+          name: text-to-sql-proxy-${{ matrix.suffix }}
+          path: dist/text-to-sql-proxy-${{ matrix.suffix }}.${{ matrix.archive }}
           retention-days: 1
 
   release:

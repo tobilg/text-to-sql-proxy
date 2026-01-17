@@ -1,6 +1,6 @@
-BINARY_NAME=ai-cli-proxy
+BINARY_NAME=text-to-sql-proxy
 DIST_DIR=dist
-CMD_PATH=./src/cmd/ai-cli-proxy
+CMD_PATH=./src/cmd/text-to-sql-proxy
 
 VERSION ?= dev
 COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")

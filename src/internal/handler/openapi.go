@@ -4,11 +4,11 @@ import (
 	"net/http"
 )
 
-// OpenAPISpec is the OpenAPI v3 specification for the AI CLI Proxy API.
+// OpenAPISpec is the OpenAPI v3 specification for the Text-to-SQL Proxy API.
 const OpenAPISpec = `{
   "openapi": "3.0.3",
   "info": {
-    "title": "AI CLI Proxy API",
+    "title": "Text-to-SQL Proxy API",
     "description": "A local HTTP proxy that bridges web applications with AI CLI tools to generate DuckDB-compatible SQL queries.",
     "version": "1.0.0",
     "license": {
