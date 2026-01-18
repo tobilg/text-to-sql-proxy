@@ -27,6 +27,23 @@ This proxy allows browser-based applications (like [sql-workbench.com](https://s
 
 ## Installation
 
+### Homebrew (macOS Apple Silicon)
+
+```bash
+brew tap tobilg/text-to-sql-proxy
+brew install text-to-sql-proxy
+```
+
+After installation, you can run it as a service:
+```bash
+brew services start text-to-sql-proxy
+```
+
+Or run it manually:
+```bash
+text-to-sql-proxy
+```
+
 ### Build from source
 
 ```bash
@@ -43,7 +60,7 @@ make build-all
 
 ### Pre-built binaries
 
-Download the appropriate binary for your platform from the `dist/` directory after building:
+Download the appropriate binary for your platform from the [releases page](https://github.com/tobilg/text-to-sql-proxy/releases):
 
 | Platform | Binary |
 |----------|--------|
